@@ -8,6 +8,7 @@ from pageObjects.Login_Page import LoginPage
 import time
 from selenium.webdriver.common.by import By
 
+@pytest.mark.order(1)
 @pytest.mark.usefixtures("setup")
 class Test_loginPage:
 
@@ -28,25 +29,8 @@ class Test_loginPage:
             print("Test_001_titleCheck Failed")
             assert False
 
-
-    #Testcase to check login with valid credentials
-    def test_002_valid_loginCheck(self,login_setup):
-        print("#Testcase to check login with valid credentials")
-        username = "admin@yourstore.com"
-        password = "admin"
-        self.lp=login_setup
-        #self.driver.get(self.baseurl)
-        #self.lp=LoginPage(self.driver)
-        self.lp.username_fn(username)
-        self.lp.password_fn(password)
-        self.lp.login_fn()
-        self.lp.alert_check()
-        print("Test_002_valid_loginCheck Passed")
-        assert True
-
-
     #Testcase to check login with valid credentials :valid username, invalid password
-    def test_003_invalid_loginCheck1(self,login_setup):
+    def test_002_invalid_loginCheck(self,login_setup):
         print("#Testcase to check login with invalid credentials :valid username, invalid password")
         username = "admin@yourstore.com"
         password = "ad"
@@ -64,7 +48,7 @@ class Test_loginPage:
             print("Test_003_invalid_loginCheck Failed - No error")
             assert False
 
-    def test_004_invalid_loginCheck2(self,login_setup):
+    def test_003_invalid_loginCheck(self,login_setup):
         print("#Testcase to check login with invalid credentials :invalid username, valid password")
         username = "jisha"
         password = "ad"
@@ -79,7 +63,7 @@ class Test_loginPage:
         else:
             print("Test004 failed, accepting invalid email")
             assert False
-    def test_005_invalid_loginCheck5(self,login_setup):
+    def test_004_invalid_loginCheck(self,login_setup):
         print("Testcase to check login with blank username and password")
         username = ""
         password = ""
@@ -95,6 +79,20 @@ class Test_loginPage:
             print("Test004 failed, accepting invalid email")
             assert False
 
+    #Testcase to check login with valid credentials
+    def test_005_valid_loginCheck(self,login_setup):
+        print("#Testcase to check login with valid credentials")
+        username = "admin@yourstore.com"
+        password = "admin"
+        self.lp=login_setup
+        #self.driver.get(self.baseurl)
+        #self.lp=LoginPage(self.driver)
+        self.lp.username_fn(username)
+        self.lp.password_fn(password)
+        self.lp.login_fn()
+        self.lp.alert_check()
+        print("Test_002_valid_loginCheck Passed")
+        assert True
 
     def test_006_logout(self,login_setup):
         username = "admin@yourstore.com"
