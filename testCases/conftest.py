@@ -2,8 +2,13 @@ import pytest
 import undetected_chromedriver as uc
 import selenium
 from selenium import webdriver
+import time
 
-from pageObjects.Sales_Section import HomePage
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+
+from pageObjects.Sales_Section import SalesSection
 from pageObjects.Login_Page import LoginPage
 
 
@@ -11,7 +16,7 @@ from pageObjects.Login_Page import LoginPage
 def setup():
     driver=uc.Chrome()
     driver.get("https://admin-demo.nopcommerce.com/login?returnUrl=%2Fadmin%2F")
-    driver.maximize_window()
+    #driver.maximize_window()
     driver.implicitly_wait(10)
     yield driver
     driver.quit()
@@ -34,5 +39,5 @@ def login_setup(setup):
 
 @pytest.fixture
 def homepage_setup(logged_in_driver):
-    hp=HomePage(logged_in_driver)
+    hp=SalesSection(logged_in_driver)
     return hp
