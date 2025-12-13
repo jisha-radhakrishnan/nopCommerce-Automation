@@ -1,18 +1,32 @@
 import time
 
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import Select
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 
 class SalesSection:
+    # Navigation and Search Locators
     order=(By.XPATH,"//a[@href='/Admin/Order/List'][normalize-space()='More info']")
     start_date=(By.ID,"StartDate")
     end_date=(By.ID,"EndDate")
     search=(By.ID,"search-orders")
     Order_statuses=(By.ID,"OrderStatusIds")
 
+    # Table Data Verification Locators
+    checkbox_rows=(By.XPATH,"//table//tbody/tr/td/input[@type='checkbox']")
+    no_data_message=(By.XPATH,"//*[contains(text(), 'No data available in table')]")
+    no_records_message=(By.XPATH,"//*[contains(text(), 'No records')]")
+    data_rows=(By.XPATH,"//table//tbody/tr[count(td) > 1 and not(contains(., 'No data available'))]")
+    view_buttons=(By.XPATH,"//table//tbody//button[contains(text(), 'View')] | //table//tbody//a[contains(text(), 'View')]")
+
+    # Export Locators
+    first_order_checkbox = (By.XPATH, "//table//tbody/tr[1]/td/input[@type='checkbox']")
+    export_button = (By.XPATH, "//button[@class='btn btn-success dropdown-toggle dropdown-icon']")
+    export_to_excel=(By.XPATH, "//button[@id='exportexcel-selected']")
+
+    element_locator= (By.XPATH,"//div[@class='ico-help']")
 
     def __init__(self,driver):
         self.driver=driver
@@ -21,36 +35,8 @@ class SalesSection:
         self.driver.find_element(*self.order).click()
 
 
-    '''def order_search_fn(self):
-
-            self.driver.execute_script(
-                "document.getElementById('StartDate').value = '2019-02-03';")
-            self.driver.execute_script(
-                "document.getElementById('EndDate').value = '2025-12-27';")
-            # Trigger change events to ensure the calendar widget recognizes the change
-            self.driver.execute_script(
-                "document.getElementById('StartDate').dispatchEvent(new Event('change'));")
-            self.driver.execute_script(
-                "document.getElementById('EndDate').dispatchEvent(new Event('change'));")
-            # Small delay to ensure values are set
-            dropdown=Select(self.driver.find_element(*self.Order_statuses))
-            dropdown.select_by_visible_text("Processing")
-            time.sleep(1)
-            self.driver.find_element(*self.search).click()
-            time.sleep(2)'''
-
     def order_search_fn(self, start_date="2019-02-03", end_date="2025-12-27", order_status="Processing"):
-        """
-        Search for orders with specified date range and status.
 
-        Args:
-            start_date: Start date in format 'YYYY-MM-DD'
-            end_date: End date in format 'YYYY-MM-DD'
-            order_status: Order status to filter (e.g., 'Processing', 'Cancelled')
-
-        Returns:
-            dict: {'has_data': bool, 'status_searched': str, 'order_count': int}
-        """
         try:
             # Set start date
             self.driver.execute_script(
@@ -67,14 +53,13 @@ class SalesSection:
             # Select order status from dropdown
             dropdown = Select(self.driver.find_element(*self.Order_statuses))
             dropdown.select_by_visible_text(order_status)
-
             time.sleep(1)
 
             # Click search button
             self.driver.find_element(*self.search).click()
             time.sleep(2)
 
-            # Get the actual selected status from dropdown (to verify)
+            # Get the actual selected status from dropdown
             selected_status = dropdown.first_selected_option.text
 
             # Check if data is available in the table
@@ -114,8 +99,7 @@ class SalesSection:
 
             # Method 1: Check for "No data available in table" message
             try:
-                no_data_elements = self.driver.find_elements(By.XPATH,
-                                                             "//*[contains(text(), 'No data available in table')]")
+                no_data_elements = self.driver.find_elements(*self.no_data_message)
                 if len(no_data_elements) > 0:
                     for elem in no_data_elements:
                         if elem.is_displayed():
@@ -126,8 +110,7 @@ class SalesSection:
 
             # Method 2: Check for "No records" message
             try:
-                no_records_elements = self.driver.find_elements(By.XPATH,
-                                                                "//*[contains(text(), 'No records')]")
+                no_records_elements = self.driver.find_elements(*self.no_records_message)
                 if len(no_records_elements) > 0:
                     for elem in no_records_elements:
                         if elem.is_displayed():
@@ -138,8 +121,7 @@ class SalesSection:
 
             # Method 3: Check for checkbox rows (indicates data)
             try:
-                checkbox_rows = self.driver.find_elements(By.XPATH,
-                                                          "//table//tbody/tr/td/input[@type='checkbox']")
+                checkbox_rows = self.driver.find_elements(*self.checkbox_rows)
                 if len(checkbox_rows) > 0:
                     print(f"  → Found {len(checkbox_rows)} order row(s) with checkboxes")
                     return True
@@ -148,8 +130,7 @@ class SalesSection:
 
             # Method 4: Check for "View" buttons
             try:
-                view_buttons = self.driver.find_elements(By.XPATH,
-                                                         "//table//tbody//button[contains(text(), 'View')] | //table//tbody//a[contains(text(), 'View')]")
+                view_buttons = self.driver.find_elements(*self.view_buttons)
                 if len(view_buttons) > 0:
                     print(f"  → Found {len(view_buttons)} 'View' button(s)")
                     return True
@@ -173,16 +154,33 @@ class SalesSection:
         """
         try:
             # Count checkbox rows (most reliable)
-            checkbox_rows = self.driver.find_elements(By.XPATH,
-                                                      "//table//tbody/tr/td/input[@type='checkbox']")
+            checkbox_rows = self.driver.find_elements(*self.checkbox_rows)
             if len(checkbox_rows) > 0:
                 return len(checkbox_rows)
 
             # Fallback: Count data rows
-            data_rows = self.driver.find_elements(By.XPATH,
-                                                  "//table//tbody/tr[count(td) > 1 and not(contains(., 'No data available'))]")
+            data_rows = self.driver.find_elements(*self.data_rows)
             return len(data_rows)
 
         except Exception as e:
             print(f"Error getting order count: {str(e)}")
             return 0
+
+    def select_first_order(self):
+        """Select the first order checkbox"""
+        self.driver.find_element(*self.first_order_checkbox).click()
+        time.sleep(0.5)
+
+    def export_selected_to_excel(self):
+        """Click export to Excel button"""
+        self.driver.find_element(*self.export_button).click()
+        self.driver.find_element(*self.export_to_excel).click()
+        time.sleep(2)
+    def text_hover_check(self):
+        """Using ActionChains to hover over element"""
+        element = self.driver.find_element(*self.element_locator)
+        actions = ActionChains(self.driver)
+        actions.move_to_element(element).perform()
+        time.sleep(1)
+        hover_text=element.get_attribute("data-original-title")
+        return hover_text

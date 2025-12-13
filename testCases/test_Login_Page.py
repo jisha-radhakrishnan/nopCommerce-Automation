@@ -23,7 +23,7 @@ class Test_loginPage:
         if actual_title == "nopCommerce demo store. Login":
             print("Test_001_titleCheck Passed")
             assert True
-            self.driver.save_screenshot(".\\Screenshots\\"+"titlecheck.png")
+            self.driver.save_screenshot(".\\Screenshots\\"+"login_titlecheck1.png")
 
         else:
             print("Test_001_titleCheck Failed")

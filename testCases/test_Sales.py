@@ -35,8 +35,6 @@ class Test_HomePage:
             assert result['order_count'] > 0, f"Expected orders > 0, got {result['order_count']}"
             print(f"✓ Test Passed: Found {result['order_count']} Processing orders")
 
-            # Take screenshot
-            self.hp.driver.save_screenshot(".\\Screenshots\\" + "search_processing_orders.png")
 
     def test_009_search_cancelled_orders(self, homepage_setup):
         """Test order search with Cancelled status - expecting no data"""
@@ -99,4 +97,20 @@ class Test_HomePage:
             else:
                 print(f"{status:15} : No data available")
         print('=' * 60)
+
+    def test_011_export_pending_order(self, homepage_setup):
+        """Export Pending order to Excel"""
+        self.hp = homepage_setup
+        self.hp.order_details_fn()
+        result = self.hp.order_search_fn(start_date = "2019-02-03",end_date = "2025-12-27", order_status = "Processing")
+
+        # Select first order and export
+        assert result['has_data'] == True
+        self.hp.select_first_order()
+        self.hp.export_selected_to_excel()
+
+    def test_012_text_hover(self, homepage_setup):
+        self.hp = homepage_setup
+        self.hp.order_details_fn()
+        print("Hover Text is",self.hp.text_hover_check())
 
