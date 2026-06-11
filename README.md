@@ -1,40 +1,144 @@
-nopCommerce Admin Testing Automation
+# 🛒 nopCommerce Admin Automation Framework
 
-Overview: 
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![Selenium](https://img.shields.io/badge/Selenium-WebDriver-green?logo=selenium)
+![Pytest](https://img.shields.io/badge/Tested%20with-Pytest-yellow?logo=pytest)
+![Framework](https://img.shields.io/badge/Pattern-Page%20Object%20Model-orange)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 
-This project demonstrates professional automation testing for the nopCommerce admin portal using Python, Selenium WebDriver, and Pytest. It showcases hands-on experience in designing and executing functional, regression, and data-driven tests for a real-world web application.
+> End-to-end automation testing suite for the **nopCommerce e-commerce admin portal**,
+> built with Python, Selenium WebDriver, and Pytest following the Page Object Model design pattern.
 
-The project reflects 4 years of QA experience, emphasizing test planning, execution, reporting, and maintainable automation frameworks. It serves as a portfolio piece demonstrating practical software testing skills in an e-commerce admin environment.
+🔗 **Live Demo Site:** [admin-demo.nopcommerce.com](https://admin-demo.nopcommerce.com/login?returnUrl=%2Fadmin%2F)
 
-Demo URL - https://admin-demo.nopcommerce.com/login?returnUrl=%2Fadmin%2F
+---
 
+## 📋 Table of Contents
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Test Scenarios](#test-scenarios)
+- [How to Run](#how-to-run)
+- [Reports & Screenshots](#reports--screenshots)
+- [Key Skills Demonstrated](#key-skills-demonstrated)
 
-Key Skills Demonstrated: 
+---
 
-* Functional Testing – Verifying critical workflows including login, customer, product, and order management
+## 📌 Overview
 
-* Automation Testing – Selenium WebDriver with Python for browser-based automation
+This project is a professional automation framework for the **nopCommerce admin portal** — a real-world e-commerce platform. It demonstrates:
 
-* Test Frameworks – Pytest for structured test execution, fixtures, and parameterized tests
+- Clean **Page Object Model (POM)** architecture
+- **Data-driven testing** using external test data files
+- **Automatic screenshots** on test failure
+- **HTML test reports** for every test run
+- Modular, reusable, and maintainable code structure
 
-* Page Object Model (POM) – For scalable and maintainable automation
+---
 
-* Test Case Design – Writing clear, reusable, and modular test cases
+## 🛠️ Tech Stack
 
-* Reporting & Logging – Generating HTML test reports and logging detailed execution results
+| Tool | Purpose |
+|------|---------|
+| **Python 3.x** | Core programming language |
+| **Selenium WebDriver** | Browser automation |
+| **Pytest** | Test framework & execution |
+| **Page Object Model** | Design pattern for maintainability |
+| **Pytest-HTML** | Test execution reports |
+| **Chrome WebDriver** | Browser (configurable) |
+| **Git & GitHub** | Version control |
 
-* Exploratory Testing – Identifying potential issues beyond scripted scenarios
+---
 
+## 📁 Project Structure
 
+```
+nopCommerce-Automation/
+│
+├── 📂 pageObjects/          # Page classes (POM)
+│   ├── LoginPage.py
+│   ├── CustomersPage.py
+│   └── ...
+│
+├── 📂 testCases/            # Pytest test files
+│   ├── test_login.py
+│   ├── test_customers.py
+│   └── ...
+│
+├── 📂 utilities/            # Reusable helpers
+│   ├── readConfig.py
+│   └── customLogger.py
+│
+├── 📂 TestData/             # External test data
+├── 📂 Configurations/       # Config & settings
+├── 📂 Logs/                 # Execution logs
+├── 📂 Screenshots/          # Failure screenshots
+├── 📂 Reports/              # HTML test reports
+├── 📄 conftest.py           # Pytest fixtures
+├── 📄 pytest.ini            # Pytest configuration
+└── 📄 requirements.txt      # Dependencies
+```
 
-Technologies & Tools :
+---
 
-* Language: Python 3.x
+## ✅ Test Scenarios Covered
 
-* Automation Framework: Selenium WebDriver
+| Module | Test Cases |
+|--------|-----------|
+| **Login** | Valid login, Invalid credentials, Empty fields |
+| **Customer Management** | Search customer, Add customer, Edit customer |
+| **Product Management** | Add product, Search product, Edit product |
+| **Order Management** | View orders, Filter by status |
 
-* Testing Framework: Pytest
+---
 
-* Browser: Chrome (configurable for others)
+## ▶️ How to Run
 
-* Reporting: Pytest HTML Reports
+### 1. Clone the repository
+```bash
+git clone https://github.com/jisha-radhakrishnan/nopCommerce-Automation.git
+cd nopCommerce-Automation
+```
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run all tests
+```bash
+pytest testCases/ -v --html=Reports/report.html
+```
+
+### 4. Run a specific test
+```bash
+pytest testCases/test_login.py -v
+```
+
+---
+
+## 📊 Reports & Screenshots
+
+- After every test run, an **HTML report** is generated in the `Reports/` folder
+- On test **failure**, a screenshot is automatically saved to `Screenshots/`
+
+---
+
+## 💡 Key Skills Demonstrated
+
+- ✅ **Functional Testing** — Login, customer, product, and order workflows
+- ✅ **Page Object Model** — Clean separation of page logic and test logic
+- ✅ **Data-Driven Testing** — External test data for reusable test cases
+- ✅ **Test Reporting** — HTML reports with pass/fail details
+- ✅ **Logging** — Detailed execution logs for debugging
+- ✅ **Pytest Fixtures** — Reusable browser setup and teardown
+
+---
+
+## 👩‍💻 Author
+
+**Jisha Radhakrishnan**
+QA Automation Engineer | Python | Selenium | Pytest
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://www.linkedin.com/in/jisharadhakrishnan/)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?logo=github)](https://github.com/jisha-radhakrishnan)
