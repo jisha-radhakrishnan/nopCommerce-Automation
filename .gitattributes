@@ -1,0 +1,4 @@
+# Mark HTML reports as generated - exclude from language stats
+report.html linguist-generated=true
+Reports/*.html linguist-generated=true
+*.html linguist-documentation=true
