@@ -14,12 +14,17 @@ from pageObjects.Login_Page import LoginPage
 
 @pytest.fixture
 def setup():
-    driver=uc.Chrome()
+    #driver=uc.Chrome()
+    driver = uc.Chrome(version_main=149)
     driver.get("https://admin-demo.nopcommerce.com/login?returnUrl=%2Fadmin%2F")
     #driver.maximize_window()
     driver.implicitly_wait(10)
     yield driver
-    driver.quit()
+    try:
+        driver.quit()
+    except Exception as e:
+        print(f"Warning: driver.quit() raised an exception during teardown: {e}")
+    time.sleep(2)
 
 @pytest.fixture
 def logged_in_driver(setup):
